@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+package test.proto;
+
+import "google/api/annotations.proto";
+
+option go_package = "test/proto";
+
+service Msg {
+    rpc Deposit(MsgDeposit) returns (MsgDepositResp){
+        option (google.api.http) = {
+            post: "/v1/test/deposit"
+            body: "*"
+        };
+    }
+
+    rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResp){
+        option (google.api.http) = {
+            post: "/v1/test/withdraw"
+            body: "*"
+        };
+    }
+
+    rpc Send(MsgSend) returns (MsgSendResp){
+        option (google.api.http) = {
+        post: "/v1/test/send"
+          body: "*"
+        };
+    }
+}
+
+message MsgDeposit{
+    string userid = 1;
+    string amt  = 3;
+    string denom  = 4;
+    string memo   = 5;
+}
+message MsgDepositResp {
+}
+
+
+message MsgWithdraw {
+    string userid = 1;
+    string amt  = 2;
+    string denom  = 3;
+    string memo   = 4;
+} 
+
+message MsgWithdrawResp {
+}
+
+message MsgSend{
+    string from = 1;
+    string to   = 2;
+    string amt  = 3;
+    string denom  = 4;
+    string memo   = 5;
+}
+message MsgSendResp {
+}
+
+
+service Query {
+    rpc Balance(QueryBalance) returns (QueryBalanceResp){
+        option (google.api.http) = {
+            get: "/v1/test/balance"
+        };
+    }
+
+    rpc Withdraw(QueryHistory) returns (QueryHistoryResp){
+        option (google.api.http) = {
+            get: "/v1/test/history"
+        };
+    }
+}
+
+message QueryBalance {
+    string userid   = 1;
+}
+message BalanceItem {
+    string amt    = 1;
+    string denom  = 2;
+}
+message QueryBalanceResp {
+    string userid = 1;
+    repeated BalanceItem items = 2;
+}
+
+message QueryHistory{
+    string userid = 1;
+    string start_time = 2;
+    string end_time = 3;
+}
+
+message HistoryItem {
+    string type = 1;
+    string from = 2;
+    string to   = 3;
+    string amt  = 4;
+    string denom  = 5;
+    string memo   = 6;
+}
+message QueryHistoryResp {
+    string from = 1;
+    repeated  HistoryItem history = 2;
+}

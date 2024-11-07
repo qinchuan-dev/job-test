@@ -1,0 +1,4 @@
+version: v1
+name: buf.build/job/job-test
+deps:
+- buf.build/googleapis/googleapis
