@@ -7,7 +7,7 @@
   },
   "apis": [
     {
-      "url": "./test.swagger.json"
+      "url": "./job-test.swagger.json"
     }
   ]
 }

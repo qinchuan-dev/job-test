@@ -7,11 +7,11 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-func (pg *Postgres) InsertCustomer(ctx context.Context, Id string, denom string) error {
+func (pg *Postgres) InsertCustomer(ctx context.Context, Id string, name string) error {
 	query := `INSERT INTO customer (id, name) VALUES (@id, @name)`
 	args := pgx.NamedArgs{
 		"id":   Id,
-		"name": denom,
+		"name": name,
 	}
 	_, err := pg.db.Exec(ctx, query, args)
 	if err != nil {

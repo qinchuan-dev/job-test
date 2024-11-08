@@ -67,9 +67,15 @@ service Query {
         };
     }
 
-    rpc Withdraw(QueryHistory) returns (QueryHistoryResp){
+    rpc DepositHistory(QueryDepositHistory) returns (QueryDepositHistoryResp){
         option (google.api.http) = {
-            get: "/v1/test/history"
+            get: "/v1/test/deposit-history"
+        };
+    }
+
+    rpc SendHistory(QuerySendHistory) returns (QuerySendHistoryResp){
+        option (google.api.http) = {
+            get: "/v1/test/send-history"
         };
     }
 }
@@ -86,13 +92,11 @@ message QueryBalanceResp {
     repeated BalanceItem items = 2;
 }
 
-message QueryHistory{
+message QueryDepositHistory{
     string userid = 1;
-    string start_time = 2;
-    string end_time = 3;
 }
 
-message HistoryItem {
+message DepositHistoryItem {
     string type = 1;
     string from = 2;
     string to   = 3;
@@ -100,7 +104,25 @@ message HistoryItem {
     string denom  = 5;
     string memo   = 6;
 }
-message QueryHistoryResp {
+message QueryDepositHistoryResp {
     string from = 1;
-    repeated  HistoryItem history = 2;
+    repeated  SendHistoryItem history = 2;
+}
+
+
+message QuerySendHistory{
+    string userid = 1;
+}
+
+message SendHistoryItem {
+    string type = 1;
+    string from = 2;
+    string to   = 3;
+    string amt  = 4;
+    string denom  = 5;
+    string memo   = 6;
+}
+message QuerySendHistoryResp {
+    string from = 1;
+    repeated  SendHistoryItem history = 2;
 }

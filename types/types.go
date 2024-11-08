@@ -1,7 +1,5 @@
 package types
 
-import "time"
-
 type Customer struct {
 	CustomerId string
 }
@@ -23,18 +21,20 @@ const (
 	WITHDRAW
 )
 
-type DepositHistoryItem struct {
-	CustomerId string
-	Denom      string
-	Amount     string
-	Date       time.Time
-	Type       OpType
+type DepositHistory struct {
+	Id     string `json:"id"`
+	Denom  string `json:"denom"`
+	Amount string `json:"amount"`
+	Date   string `json:"date"`
+	OpType string `json:"opType"`
+	Memo   string `json:"memo"`
 }
 
-type SendHistoryItem struct {
-	Serial   string
-	Sender   string
-	Receiver string
-	Denom    string
-	Amount   string
+type SendHistory struct {
+	Sender   string `json:"sender"`
+	Receiver string `json:"receiver"`
+	Denom    string `json:"denom"`
+	Amount   string `json:"amount"`
+	Date     string `json:"date"`
+	Memo     string `json:"memo"`
 }

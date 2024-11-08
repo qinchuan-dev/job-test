@@ -195,8 +195,9 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	Query_Balance_FullMethodName  = "/test.proto.Query/Balance"
-	Query_Withdraw_FullMethodName = "/test.proto.Query/Withdraw"
+	Query_Balance_FullMethodName        = "/test.proto.Query/Balance"
+	Query_DepositHistory_FullMethodName = "/test.proto.Query/DepositHistory"
+	Query_SendHistory_FullMethodName    = "/test.proto.Query/SendHistory"
 )
 
 // QueryClient is the client API for Query service.
@@ -204,7 +205,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type QueryClient interface {
 	Balance(ctx context.Context, in *QueryBalance, opts ...grpc.CallOption) (*QueryBalanceResp, error)
-	Withdraw(ctx context.Context, in *QueryHistory, opts ...grpc.CallOption) (*QueryHistoryResp, error)
+	DepositHistory(ctx context.Context, in *QueryDepositHistory, opts ...grpc.CallOption) (*QueryDepositHistoryResp, error)
+	SendHistory(ctx context.Context, in *QuerySendHistory, opts ...grpc.CallOption) (*QuerySendHistoryResp, error)
 }
 
 type queryClient struct {
@@ -225,10 +227,20 @@ func (c *queryClient) Balance(ctx context.Context, in *QueryBalance, opts ...grp
 	return out, nil
 }
 
-func (c *queryClient) Withdraw(ctx context.Context, in *QueryHistory, opts ...grpc.CallOption) (*QueryHistoryResp, error) {
+func (c *queryClient) DepositHistory(ctx context.Context, in *QueryDepositHistory, opts ...grpc.CallOption) (*QueryDepositHistoryResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(QueryHistoryResp)
-	err := c.cc.Invoke(ctx, Query_Withdraw_FullMethodName, in, out, cOpts...)
+	out := new(QueryDepositHistoryResp)
+	err := c.cc.Invoke(ctx, Query_DepositHistory_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) SendHistory(ctx context.Context, in *QuerySendHistory, opts ...grpc.CallOption) (*QuerySendHistoryResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(QuerySendHistoryResp)
+	err := c.cc.Invoke(ctx, Query_SendHistory_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -240,7 +252,8 @@ func (c *queryClient) Withdraw(ctx context.Context, in *QueryHistory, opts ...gr
 // for forward compatibility.
 type QueryServer interface {
 	Balance(context.Context, *QueryBalance) (*QueryBalanceResp, error)
-	Withdraw(context.Context, *QueryHistory) (*QueryHistoryResp, error)
+	DepositHistory(context.Context, *QueryDepositHistory) (*QueryDepositHistoryResp, error)
+	SendHistory(context.Context, *QuerySendHistory) (*QuerySendHistoryResp, error)
 }
 
 // UnimplementedQueryServer should be embedded to have
@@ -253,8 +266,11 @@ type UnimplementedQueryServer struct{}
 func (UnimplementedQueryServer) Balance(context.Context, *QueryBalance) (*QueryBalanceResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Balance not implemented")
 }
-func (UnimplementedQueryServer) Withdraw(context.Context, *QueryHistory) (*QueryHistoryResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Withdraw not implemented")
+func (UnimplementedQueryServer) DepositHistory(context.Context, *QueryDepositHistory) (*QueryDepositHistoryResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DepositHistory not implemented")
+}
+func (UnimplementedQueryServer) SendHistory(context.Context, *QuerySendHistory) (*QuerySendHistoryResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendHistory not implemented")
 }
 func (UnimplementedQueryServer) testEmbeddedByValue() {}
 
@@ -294,20 +310,38 @@ func _Query_Balance_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_Withdraw_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryHistory)
+func _Query_DepositHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryDepositHistory)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).Withdraw(ctx, in)
+		return srv.(QueryServer).DepositHistory(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_Withdraw_FullMethodName,
+		FullMethod: Query_DepositHistory_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).Withdraw(ctx, req.(*QueryHistory))
+		return srv.(QueryServer).DepositHistory(ctx, req.(*QueryDepositHistory))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_SendHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QuerySendHistory)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).SendHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_SendHistory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).SendHistory(ctx, req.(*QuerySendHistory))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -324,8 +358,12 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Query_Balance_Handler,
 		},
 		{
-			MethodName: "Withdraw",
-			Handler:    _Query_Withdraw_Handler,
+			MethodName: "DepositHistory",
+			Handler:    _Query_DepositHistory_Handler,
+		},
+		{
+			MethodName: "SendHistory",
+			Handler:    _Query_SendHistory_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -10,11 +10,13 @@ import (
 	"google.golang.org/grpc/reflection"
 	"job-test/pg"
 	"job-test/proto"
+	"job-test/rdb"
 	"job-test/types"
 	"log"
 	"math/big"
 	"net"
 	"net/http"
+	"time"
 )
 
 const (
@@ -37,7 +39,22 @@ func DoDepositCmd(ctx context.Context, userId, amount, denom, memo string) error
 		return err
 	}
 
-	err = db.InsertDepositHistory(ctx, userId, denom, *amt, types.DEPOSIT, memo)
+	date := time.Now()
+
+	err = db.InsertDepositHistory(ctx, userId, denom, *amt, date, types.DEPOSIT, memo)
+	if err != nil {
+		return err
+	}
+
+	rdbInstance, err := rdb.NewRdb(DefaultRedisConStr)
+	if err != nil {
+		return err
+	}
+	err = rdbInstance.Deposit(ctx, userId, denom, *amt)
+	if err != nil {
+		return err
+	}
+	err = rdbInstance.InsertDepositHistory(ctx, userId, denom, *amt, date, types.DEPOSIT, memo)
 	if err != nil {
 		return err
 	}
@@ -51,6 +68,8 @@ func DoWithdrawCmd(ctx context.Context, userId string, amount, denom, memo strin
 		return err
 	}
 
+	date := time.Now()
+
 	amt, ok := new(big.Int).SetString(amount, 0)
 	if !ok {
 		return fmt.Errorf("invalid old amount %s", amount)
@@ -60,7 +79,20 @@ func DoWithdrawCmd(ctx context.Context, userId string, amount, denom, memo strin
 		return err
 	}
 
-	err = db.InsertDepositHistory(ctx, userId, denom, *amt, types.WITHDRAW, memo)
+	err = db.InsertDepositHistory(ctx, userId, denom, *amt, date, types.WITHDRAW, memo)
+	if err != nil {
+		return err
+	}
+
+	rdbInstance, err := rdb.NewRdb(DefaultRedisConStr)
+	if err != nil {
+		return err
+	}
+	err = rdbInstance.Deposit(ctx, userId, denom, *amt)
+	if err != nil {
+		return err
+	}
+	err = rdbInstance.InsertDepositHistory(ctx, userId, denom, *amt, date, types.DEPOSIT, memo)
 	if err != nil {
 		return err
 	}
@@ -73,6 +105,8 @@ func DoMsgSendCmd(ctx context.Context, sender, receiver, amount, denom, memo str
 	if err != nil {
 		return err
 	}
+
+	date := time.Now()
 
 	amt, ok := new(big.Int).SetString(amount, 0)
 	if !ok {
@@ -88,7 +122,16 @@ func DoMsgSendCmd(ctx context.Context, sender, receiver, amount, denom, memo str
 		return err
 	}
 
-	err = db.InsertSendHistory(ctx, sender, receiver, denom, *amt, memo)
+	err = db.InsertSendHistory(ctx, sender, receiver, denom, *amt, date, memo)
+	if err != nil {
+		return err
+	}
+
+	rdbInstance, err := rdb.NewRdb(DefaultRedisConStr)
+	if err != nil {
+		return err
+	}
+	err = rdbInstance.InsertSendHistory(ctx, sender, receiver, denom, *amt, date, memo)
 	if err != nil {
 		return err
 	}
@@ -96,22 +139,30 @@ func DoMsgSendCmd(ctx context.Context, sender, receiver, amount, denom, memo str
 	return nil
 }
 
-func DoQueryBalanceCmd(ctx context.Context, userId string) ([]types.DepositItem, error) {
-	db, err := pg.NewPG(ctx, DefaultPostgresConStr)
+func DoQueryBalanceCmd(ctx context.Context, id string) ([]types.DepositItem, error) {
+	rdbInstance, err := rdb.NewRdb(DefaultRedisConStr)
 	if err != nil {
 		return nil, err
 	}
-
-	return db.GetDepositByCustomer(ctx, userId)
+	return rdbInstance.GetDepositByCustomer(ctx, id)
 }
 
-func DoQueryHistoryCmd(ctx context.Context, userId string) ([]types.DepositHistoryItem, error) {
-	db, err := pg.NewPG(ctx, DefaultPostgresConStr)
+func DoQueryDepositHistoryCmd(ctx context.Context, id string) ([]types.DepositHistory, error) {
+	rdbInstance, err := rdb.NewRdb(DefaultRedisConStr)
 	if err != nil {
 		return nil, err
 	}
 
-	return db.GetDepositHistoryByCustomer(ctx, userId)
+	return rdbInstance.GetDepositHistoryByCustomer(ctx, id)
+}
+
+func DoQuerySendHistoryCmd(ctx context.Context, sender string) ([]types.SendHistory, error) {
+	rdbInstance, err := rdb.NewRdb(DefaultRedisConStr)
+	if err != nil {
+		return nil, err
+	}
+
+	return rdbInstance.GetSendHistoryByCustomer(ctx, sender)
 }
 
 func StartCmd() *cobra.Command {

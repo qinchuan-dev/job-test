@@ -48,11 +48,20 @@ func (s *QueryServer) QueryBalance(ctx context.Context, m *proto.QueryBalance) (
 	return &proto.QueryBalanceResp{}, nil
 }
 
-func (s *QueryServer) QueryHistory(ctx context.Context, m *proto.QueryHistory) (*proto.QueryHistoryResp, error) {
-	_, err := DoQueryHistoryCmd(ctx, m.Userid)
+func (s *QueryServer) QueryDepositHistory(ctx context.Context, m *proto.QueryDepositHistory) (*proto.QueryDepositHistoryResp, error) {
+	_, err := DoQueryDepositHistoryCmd(ctx, m.Userid)
 	if err != nil {
 		return nil, err
 	} else {
-		return &proto.QueryHistoryResp{}, nil
+		return &proto.QueryDepositHistoryResp{}, nil
+	}
+}
+
+func (s *QueryServer) QuerySendHistory(ctx context.Context, m *proto.QuerySendHistory) (*proto.QuerySendHistoryResp, error) {
+	_, err := DoQuerySendHistoryCmd(ctx, m.Userid)
+	if err != nil {
+		return nil, err
+	} else {
+		return &proto.QuerySendHistoryResp{}, nil
 	}
 }
