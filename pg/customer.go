@@ -34,20 +34,22 @@ func (pg *Postgres) DeleteCustomerById(ctx context.Context, id string) error {
 	return nil
 }
 
-func (pg *Postgres) GetCustomer(ctx context.Context, id string) error {
+func (pg *Postgres) GetCustomer(ctx context.Context, id string) (string, error) {
 	query := `SELECT * FROM customer where id=@id`
 	args := pgx.NamedArgs{
 		"id": id,
 	}
 	row := pg.db.QueryRow(ctx, query, args)
-	err := row.Scan()
+
+	name := ""
+	err := row.Scan(&name)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return nil
+			return "", nil
 		} else {
-			return fmt.Errorf("unable to get row: %w", err)
+			return "", fmt.Errorf("unable to get row: %w", err)
 		}
 	}
 
-	return nil
+	return name, nil
 }

@@ -4,14 +4,14 @@ type Customer struct {
 	CustomerId string
 }
 
-type Deposit struct {
-	CustomerId string
-	Items      []DepositItem
-}
-
 type DepositItem struct {
 	Denom  string
 	Amount string
+}
+
+type Deposit struct {
+	CustomerId string
+	Items      []DepositItem
 }
 
 type OpType int

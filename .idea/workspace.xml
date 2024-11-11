@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d6fb8a8d-5d22-4495-a87b-3b08e03dc666" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/pg/customer_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pg/deposit_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pg/op-history_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rdb/customer_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rdb/deposit_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rdb/op-history_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pg/customer.go" beforeDir="false" afterPath="$PROJECT_DIR$/pg/customer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rdb/customer.go" beforeDir="false" afterPath="$PROJECT_DIR$/rdb/customer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rdb/deposit.go" beforeDir="false" afterPath="$PROJECT_DIR$/rdb/deposit.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rdb/op-history.go" beforeDir="false" afterPath="$PROJECT_DIR$/rdb/op-history.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rdb/rdb.go" beforeDir="false" afterPath="$PROJECT_DIR$/rdb/rdb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/types.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" url="file:///opt/homebrew/opt/go/libexec" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2oKHij6Q3tNYVJz0ypJzM5VSdwN" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultGoTemplateProperty": "Go File",
+    "Docker.Docker Image.executor": "Run",
+    "Docker.pg.executor": "Run",
+    "Docker.postgres.executor": "Run",
+    "Docker.redis.executor": "Run",
+    "Go Build.go build job-test.executor": "Run",
+    "Go Test.TestRdb_DeleteCustomerById in job-test/rdb.executor": "Run",
+    "Go Test.TestRdb_DeleteDeposit in job-test/rdb.executor": "Run",
+    "Go Test.TestRdb_Deposit in job-test/rdb.executor": "Run",
+    "Go Test.TestRdb_GetCustomer in job-test/rdb.executor": "Run",
+    "Go Test.TestRdb_GetDepositByCustomer in job-test/rdb.executor": "Debug",
+    "Go Test.TestRdb_GetDepositHistoryByCustomer in job-test/rdb.executor": "Run",
+    "Go Test.TestRdb_GetSendHistoryByCustomer in job-test/rdb.executor": "Run",
+    "Go Test.TestRdb_SetDeposit in job-test/rdb.executor": "Run",
+    "Go Test.TestRdb_Withdraw in job-test/rdb.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "/Users/jim/study/golang/job-test",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settingsDialog.application.dockerConsole"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql",
+      "redis"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pg" />
+      <recent name="$PROJECT_DIR$/redis" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Go Test.TestRdb_GetDepositHistoryByCustomer in job-test/rdb">
+    <configuration name="go build job-test" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="job-test" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="job-test" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestRdb_Deposit in job-test/rdb" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="job-test" />
+      <working_directory value="$PROJECT_DIR$/rdb" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="job-test/rdb" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestRdb_Deposit\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestRdb_GetDepositByCustomer in job-test/rdb" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="job-test" />
+      <working_directory value="$PROJECT_DIR$/rdb" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="job-test/rdb" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestRdb_GetDepositByCustomer\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestRdb_GetDepositHistoryByCustomer in job-test/rdb" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="job-test" />
+      <working_directory value="$PROJECT_DIR$/rdb" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="job-test/rdb" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestRdb_GetDepositHistoryByCustomer\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestRdb_GetSendHistoryByCustomer in job-test/rdb" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="job-test" />
+      <working_directory value="$PROJECT_DIR$/rdb" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="job-test/rdb" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestRdb_GetSendHistoryByCustomer\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestRdb_Withdraw in job-test/rdb" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="job-test" />
+      <working_directory value="$PROJECT_DIR$/rdb" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="job-test/rdb" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestRdb_Withdraw\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-image" temporary="true">
+      <deployment type="docker-image">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Go Build.go build job-test" />
+      <item itemvalue="Go Test.TestRdb_Deposit in job-test/rdb" />
+      <item itemvalue="Go Test.TestRdb_GetDepositByCustomer in job-test/rdb" />
+      <item itemvalue="Go Test.TestRdb_GetDepositHistoryByCustomer in job-test/rdb" />
+      <item itemvalue="Go Test.TestRdb_GetSendHistoryByCustomer in job-test/rdb" />
+      <item itemvalue="Go Test.TestRdb_Withdraw in job-test/rdb" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Test.TestRdb_GetDepositHistoryByCustomer in job-test/rdb" />
+        <item itemvalue="Go Test.TestRdb_GetSendHistoryByCustomer in job-test/rdb" />
+        <item itemvalue="Go Test.TestRdb_GetDepositByCustomer in job-test/rdb" />
+        <item itemvalue="Go Test.TestRdb_Withdraw in job-test/rdb" />
+        <item itemvalue="Go Test.TestRdb_Deposit in job-test/rdb" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-gosdk-5df93f7ad4aa-df9ad98b711f-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-242.23339.24" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-GO-242.23339.24" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/rdb/deposit.go</url>
+          <line>83</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

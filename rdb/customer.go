@@ -5,28 +5,19 @@ import (
 )
 
 const (
-	PrefixCustomer = "customer_"
+	PrefixCustomer = "customer:"
 )
 
-type Customer struct {
-	Name string `json:"name"`
+func (r *Rdb) InsertCustomer(ctx context.Context, id string, name string) error {
+	_, err := r.db.Set(ctx, PrefixCustomer+id, name, 0).Result()
+	return err
 }
 
-func (r *Rdb) InsertCustomer(ctx context.Context, Id string, name string) error {
-	r.db.HSet(ctx, PrefixCustomer, Id, name)
-	return nil
-}
-
-func (r *Rdb) DeleteCustomerById(ctx context.Context, id string) {
-	r.db.HDel(ctx, PrefixCustomer, id)
-	return
+func (r *Rdb) DeleteCustomerById(ctx context.Context, id string) error {
+	_, err := r.db.Del(ctx, PrefixCustomer+id).Result()
+	return err
 }
 
 func (r *Rdb) GetCustomer(ctx context.Context, id string) (string, error) {
-	cmdReturn := r.db.HGetAll(ctx, PrefixCustomer+id)
-	var c Customer
-	if err := cmdReturn.Scan(&c); err != nil {
-		panic(err)
-	}
-	return c.Name, nil
+	return r.db.Get(ctx, PrefixCustomer+id).Result()
 }

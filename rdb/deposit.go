@@ -5,38 +5,30 @@ import (
 	"errors"
 	"github.com/redis/go-redis/v9"
 	"job-test/types"
-	"log"
 	"math/big"
 )
 
 const (
-	PrefixDeposit = "deposit_"
+	PrefixDeposit = "deposit:"
 )
 
 func (r *Rdb) SetDeposit(ctx context.Context, id string, denom string, amt big.Int) error {
-	amtStr, ok := new(big.Int).SetString(amt.String(), 0)
-	if !ok {
-		return errors.New("invalid old amount")
-	}
-
-	r.db.HSet(ctx, PrefixDeposit+id, denom, amtStr)
-
-	return nil
+	_, err := r.db.Set(ctx, PrefixDeposit+id+":"+denom+":", amt.String(), 0).Result()
+	return err
 }
 
 func (r *Rdb) DeleteDeposit(ctx context.Context, id string, denom string) error {
-	_, err := r.db.HDel(ctx, PrefixDeposit+id, denom).Result()
-	if err != nil {
-		return err
-	}
-	return nil
+	_, err := r.db.Del(ctx, PrefixDeposit+id+":"+denom+":").Result()
+	return err
 }
 
 func (r *Rdb) Deposit(ctx context.Context, id string, denom string, deltaAmt big.Int) error {
-	oldAmtStr, err := r.db.HGet(ctx, PrefixDeposit+id, denom).Result()
+	k := PrefixDeposit + id + ":" + denom + ":"
+
+	oldAmtStr, err := r.db.Get(ctx, k).Result()
 	if err != nil {
 		if errors.Is(err, redis.Nil) {
-			_, err := r.db.HSet(ctx, PrefixDeposit+id, denom, deltaAmt.String()).Result()
+			_, err := r.db.Set(ctx, k, deltaAmt.String(), 0).Result()
 			if err != nil {
 				return err
 			}
@@ -50,13 +42,16 @@ func (r *Rdb) Deposit(ctx context.Context, id string, denom string, deltaAmt big
 	}
 	newAmt := oldAmt.Add(oldAmt, &deltaAmt)
 
-	r.db.HSet(ctx, PrefixDeposit+id, denom, newAmt.String())
+	_, err = r.db.Set(ctx, k, newAmt.String(), 0).Result()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
 
 func (r *Rdb) Withdraw(ctx context.Context, id string, denom string, deltaAmt big.Int) error {
-	oldAmtStr, err := r.db.HGet(ctx, PrefixDeposit+id, denom).Result()
+	oldAmtStr, err := r.db.Get(ctx, PrefixDeposit+id+":"+denom+":").Result()
 	if err != nil {
 		return err
 	}
@@ -67,24 +62,54 @@ func (r *Rdb) Withdraw(ctx context.Context, id string, denom string, deltaAmt bi
 
 	newAmt := oldAmt.Sub(oldAmt, &deltaAmt)
 
-	r.db.HSet(ctx, PrefixDeposit+id, denom, newAmt.String())
+	r.db.Set(ctx, PrefixDeposit+id+":"+denom+":", newAmt.String(), 0)
 
 	return nil
 }
 
-func (r *Rdb) GetDepositByCustomer(ctx context.Context, id string) ([]types.DepositItem, error) {
-	hashFields, err := r.db.HGetAll(ctx, PrefixDeposit+id).Result()
+func (r *Rdb) GetDepositByCustomerDenom(ctx context.Context, id, denom string) (types.DepositItem, error) {
+	amtStr, err := r.db.Get(ctx, PrefixDeposit+id+":"+denom+":").Result()
 	if err != nil {
-		log.Fatalf("Failed to get hash fields and values: %v", err)
+		return types.DepositItem{}, err
+	}
+
+	var item types.DepositItem
+	item.Denom = denom
+	item.Amount = amtStr
+
+	return item, nil
+}
+
+func (r *Rdb) GetDepositByCustomer(ctx context.Context, id string) ([]types.DepositItem, error) {
+	var cursor uint64 = 0
+	var keys []string
+
+	for {
+		var scanKeys []string
+		var err error
+		pattern := PrefixDeposit + id + ":*"
+
+		scanKeys, cursor, err = r.db.Scan(ctx, cursor, pattern, 0).Result()
+		if err != nil {
+			return nil, err
+		}
+		keys = append(keys, scanKeys...)
+		if cursor == 0 {
+			break
+		}
 	}
 
 	var items []types.DepositItem
-	for denom, amtStr := range hashFields {
+	for _, key := range keys {
 		item := types.DepositItem{}
-		item.Denom = denom
+		amtStr, err := r.db.Get(ctx, key).Result()
+		if err != nil {
+			return nil, err
+		}
+		item.Denom = key
 		item.Amount = amtStr
-
 		items = append(items, item)
 	}
+
 	return items, nil
 }

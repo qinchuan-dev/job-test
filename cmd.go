@@ -41,6 +41,15 @@ func DoDepositCmd(ctx context.Context, userId, amount, denom, memo string) error
 
 	date := time.Now()
 
+	item := types.DepositHistory{
+		Id:     userId,
+		Denom:  denom,
+		Amount: amount,
+		Date:   date.String(),
+		OpType: string(rune(types.DEPOSIT)),
+		Memo:   memo,
+	}
+
 	err = db.InsertDepositHistory(ctx, userId, denom, *amt, date, types.DEPOSIT, memo)
 	if err != nil {
 		return err
@@ -54,7 +63,8 @@ func DoDepositCmd(ctx context.Context, userId, amount, denom, memo string) error
 	if err != nil {
 		return err
 	}
-	err = rdbInstance.InsertDepositHistory(ctx, userId, denom, *amt, date, types.DEPOSIT, memo)
+
+	err = rdbInstance.InsertDepositHistory(ctx, item)
 	if err != nil {
 		return err
 	}
@@ -69,6 +79,15 @@ func DoWithdrawCmd(ctx context.Context, userId string, amount, denom, memo strin
 	}
 
 	date := time.Now()
+
+	item := types.DepositHistory{
+		Id:     userId,
+		Denom:  denom,
+		Amount: amount,
+		Date:   date.String(),
+		OpType: string(rune(types.WITHDRAW)),
+		Memo:   memo,
+	}
 
 	amt, ok := new(big.Int).SetString(amount, 0)
 	if !ok {
@@ -92,7 +111,7 @@ func DoWithdrawCmd(ctx context.Context, userId string, amount, denom, memo strin
 	if err != nil {
 		return err
 	}
-	err = rdbInstance.InsertDepositHistory(ctx, userId, denom, *amt, date, types.DEPOSIT, memo)
+	err = rdbInstance.InsertDepositHistory(ctx, item)
 	if err != nil {
 		return err
 	}
@@ -108,6 +127,14 @@ func DoMsgSendCmd(ctx context.Context, sender, receiver, amount, denom, memo str
 
 	date := time.Now()
 
+	item := types.SendHistory{
+		Sender:   sender,
+		Receiver: receiver,
+		Denom:    denom,
+		Amount:   amount,
+		Date:     date.String(),
+		Memo:     memo,
+	}
 	amt, ok := new(big.Int).SetString(amount, 0)
 	if !ok {
 		return fmt.Errorf("invalid old amount %s", amount)
@@ -131,7 +158,7 @@ func DoMsgSendCmd(ctx context.Context, sender, receiver, amount, denom, memo str
 	if err != nil {
 		return err
 	}
-	err = rdbInstance.InsertSendHistory(ctx, sender, receiver, denom, *amt, date, memo)
+	err = rdbInstance.InsertSendHistory(ctx, item)
 	if err != nil {
 		return err
 	}
